@@ -1,8 +1,27 @@
-/bin/
-/.settings/
+# Eclipse stuff
+/.classpath
 /.project
+/.settings
+/bin/
 /build.xml
 
-/.classpath
+# maven
 /target
+
+# vim
+.*.sw[a-p]
+
+# various other potential build files
+/build
+/bin
+/dist
+/lib
+/manifest.mf
+
+# Mac filesystem dust
+/.DS_Store
+
+# IntelliJ
 /.idea
+
+ChatGuard.iml

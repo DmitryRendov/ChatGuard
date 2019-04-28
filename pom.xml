@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.Den_Abr.ChatGuard</groupId>
-    <artifactId>ChatGuardPlugin</artifactId>
-    <version>7.6.0</version>
+    <artifactId>ChatGuard</artifactId>
+    <version>7.7.0</version>
     <packaging>jar</packaging>
-    <name>ChatGuardPlugin</name>
+    <name>ChatGuard</name>
     <description>Guard for your chat.</description>
     <url>https://github.com/DenAbr/ChatGuard</url>
 
@@ -19,13 +19,13 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.13-R0.1-SNAPSHOT</version>
+            <version>1.14-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>fr.xephi</groupId>
             <artifactId>authme</artifactId>
-            <version>5.4.0</version>
+            <version>5.6.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>fr.neatmonster</groupId>
