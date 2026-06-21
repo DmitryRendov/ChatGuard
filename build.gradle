@@ -1,0 +1,74 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
+
+}
+
+group = 'ru.den_abr'
+version = '7.7.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
+    maven { url "https://repo.codemc.org/repository/maven-public/" }
+    maven { url "https://repo.papermc.io/repository/maven-public/" }
+    maven { url "https://repo.md-5.net/content/repositories/releases/" }
+    // AuthMe repository
+    maven { url "https://repo.vshnv.de/repository/maven-public/" }
+    // For older libraries
+    maven { url "https://repo1.maven.org/maven2/" }
+    mavenCentral()
+}
+
+compileJava {
+    dependsOn clean
+}
+
+shadowJar {
+    configurations = [project.configurations.runtimeClasspath]
+
+    dependencies {
+        // Only merge bStats into the final jar, no other dependencies
+        exclude { it.moduleGroup != "org.bstats" }
+    }
+}
+
+processResources {
+    duplicatesStrategy = 'include'
+    
+    from (sourceSets.main.resources.srcDirs) {
+        expand 'version': version
+        include 'plugin.yml'
+    }
+
+    from (sourceSets.main.resources.srcDirs) {
+        exclude 'plugin.yml'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT'
+    
+    // Required: AuthMe integration  
+    compileOnly 'fr.xephi:authme:5.4.0'
+    
+    // Required: Apache Commons Lang (old version for backward compatibility)
+    implementation 'commons-lang:commons-lang:2.6'
+    
+    // Metrics library - bundled in the plugin
+    implementation 'org.bstats:bstats-bukkit:3.2.1'
+    
+    // Optional dependencies from lib/ folder (if they exist locally)
+    // Users can download these and place them in lib/ folder
+    fileTree(dir: 'lib', include: '*.jar')
+}
