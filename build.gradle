@@ -1,45 +1,46 @@
-buildscript {
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-    }
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'java'
-apply plugin: 'maven'
 
 group = 'ru.den_abr'
-version = '7.6.2'
+version = '7.7.0'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-repositories {
-	mavenLocal()
-	maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
-	maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
-	maven { url "http://repo.codemc.org/repository/maven-public/" }
-	maven { url "https://repo.md-5.net/content/repositories/releases/" }
-	maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
-	maven { url "http://ci.drtshock.net/plugin/repository/everything/" }
-	maven { url "https://repo.codemc.org/repository/maven-public/" }
-	mavenCentral()
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
-compileJava.dependsOn(clean)
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
+    maven { url "https://repo.codemc.org/repository/maven-public/" }
+    maven { url "https://repo.papermc.io/repository/maven-public/" }
+    maven { url "https://repo.md-5.net/content/repositories/releases/" }
+    // AuthMe repository
+    maven { url "https://repo.vshnv.de/repository/maven-public/" }
+    // For older libraries
+    maven { url "https://repo1.maven.org/maven2/" }
+    mavenCentral()
+}
+
+compileJava {
+    dependsOn clean
+}
 
 shadowJar {
-    archiveName = project.name+'.jar'
+    archiveFileName = project.name + '.jar'
     relocate 'org.bstats.bukkit', 'ru.Den_Abr.ChatGuard.ThirdParty.bstats'
 }
 
 processResources {
+    duplicatesStrategy = 'include'
+    
     from (sourceSets.main.resources.srcDirs) {
         expand 'version': version
         include 'plugin.yml'
@@ -51,10 +52,18 @@ processResources {
 }
 
 dependencies {
-    compileOnly group: 'fr.xephi', name: 'authme', version:'5.4.0'
-    compileOnly group: 'com.comphenix.protocol', name: 'ProtocolLib', version:'4.3.0'
-    compileOnly group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version:'4.3.0'
-    compileOnly group: 'org.bukkit', name: 'bukkit', version:'1.13.2-R0.1-SNAPSHOT'
-    compileOnly group: 'fr.neatmonster', name: 'nocheatplus', version:'3.16.0-RC'
-    compile group: 'org.bstats', name: 'bstats-bukkit', version:'1.4'
+    compileOnly 'org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT'
+    
+    // Required: AuthMe integration  
+    compileOnly 'fr.xephi:authme:5.4.0'
+    
+    // Required: Apache Commons Lang (old version for backward compatibility)
+    implementation 'commons-lang:commons-lang:2.6'
+    
+    // Metrics library - bundled in the plugin
+    implementation 'org.bstats:bstats-bukkit:1.8'
+    
+    // Optional dependencies from lib/ folder (if they exist locally)
+    // Users can download these and place them in lib/ folder
+    fileTree(dir: 'lib', include: '*.jar')
 }

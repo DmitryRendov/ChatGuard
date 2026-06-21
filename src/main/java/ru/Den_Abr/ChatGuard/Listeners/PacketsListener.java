@@ -43,7 +43,7 @@ public class PacketsListener {
             if (AbstractIntegration.shouldSkip(e.getPlayer()))
                 return;
             PacketContainer packet = e.getPacket();
-            String message = packet.getStrings().read(0);
+            String message = (String) packet.getStrings().read(0);
 
             if (!message.startsWith("/")) {
                 if (PlayerListener.getPMCommand(message) != null) {
@@ -79,7 +79,7 @@ public class PacketsListener {
         pc.getChatComponents().write(0, wcc);
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(p, pc);
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
