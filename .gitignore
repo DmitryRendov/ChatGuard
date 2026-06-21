@@ -8,3 +8,6 @@
 /.idea
 /.gradle
 /gradle
+
+.vscode/
+target/

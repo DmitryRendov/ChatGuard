@@ -106,7 +106,7 @@ public class ChatGuardPlugin extends JavaPlugin {
     private void initMetrics() {
         // bStatsId for ChatGuard plugin
         // Get your own ID from https://bstats.org/
-        metrics = new Metrics(this, 19273);
+        metrics = new Metrics(this, 3217);
     }
 
     public static ChatGuardPlugin getInstance() {

@@ -1,6 +1,7 @@
 package ru.Den_Abr.ChatGuard.ChatFilters;
 
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 
 import ru.Den_Abr.ChatGuard.ChatGuardPlugin;
 import ru.Den_Abr.ChatGuard.Violation;
@@ -20,9 +21,9 @@ public interface Filter {
     public void register();
 
     default void addMetricsGraph() {
-        if (ChatGuardPlugin.metrics.isEnabled())
+        if (ChatGuardPlugin.metrics != null)
             ChatGuardPlugin.metrics.addCustomChart(
-                    new Metrics.SimplePie("filters_used", () -> getClass().getSimpleName().replace("Filter", "")));
+                    new SimplePie("filters_used", () -> getClass().getSimpleName().replace("Filter", "")));
     }
 
 }

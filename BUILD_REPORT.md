@@ -20,7 +20,7 @@
    - ✅ Updated Spigot API: 1.13.2 → **1.20.6**
    - ✅ Added Apache Commons Lang 2.6 (was missing)
    - ✅ Updated bstats: 1.4 → 1.8
-   - ✅ Fixed Metrics initialization with required plugin ID (19273)
+   - ✅ Fixed Metrics initialization with required plugin ID (3217)
 
 #### 4. **Optional Dependencies Handled**
    - ✅ Created stub classes for optional ProtocolLib (v5.x compatible)

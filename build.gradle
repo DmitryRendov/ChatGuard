@@ -1,6 +1,7 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
+
 }
 
 group = 'ru.den_abr'
@@ -34,8 +35,12 @@ compileJava {
 }
 
 shadowJar {
-    archiveFileName = project.name + '.jar'
-    relocate 'org.bstats.bukkit', 'ru.Den_Abr.ChatGuard.ThirdParty.bstats'
+    configurations = [project.configurations.runtimeClasspath]
+
+    dependencies {
+        // Only merge bStats into the final jar, no other dependencies
+        exclude { it.moduleGroup != "org.bstats" }
+    }
 }
 
 processResources {
@@ -61,7 +66,7 @@ dependencies {
     implementation 'commons-lang:commons-lang:2.6'
     
     // Metrics library - bundled in the plugin
-    implementation 'org.bstats:bstats-bukkit:1.8'
+    implementation 'org.bstats:bstats-bukkit:3.2.1'
     
     // Optional dependencies from lib/ folder (if they exist locally)
     // Users can download these and place them in lib/ folder
