@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.0'
     id 'java'
 
 }
@@ -34,14 +34,28 @@ compileJava {
     dependsOn clean
 }
 
+// Disable the plain jar so only the shadow jar is published
+jar {
+    enabled = false
+}
+
 shadowJar {
+    // Remove the '-all' classifier so the output is ChatGuard-7.7.0.jar
+    archiveClassifier.set('')
+
     configurations = [project.configurations.runtimeClasspath]
 
     dependencies {
-        // Only merge bStats into the final jar, no other dependencies
+        // Only bundle bStats; exclude everything else (spigot, authme, etc. are compileOnly)
         exclude { it.moduleGroup != "org.bstats" }
     }
+
+    // bStats 3.x requires relocation — it throws IllegalStateException at startup otherwise
+    relocate 'org.bstats', 'ru.Den_Abr.ChatGuard.bstats'
 }
+
+// Make the standard 'build' task produce the shadow jar
+build.dependsOn shadowJar
 
 processResources {
     duplicatesStrategy = 'include'
