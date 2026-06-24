@@ -50,8 +50,7 @@ shadowJar {
         exclude { it.moduleGroup != "org.bstats" }
     }
 
-    // Disable transformation for now to avoid ASM issues with Java 25
-    // Users will handle bstats conflicts at runtime
+    // bStats 3.x requires relocation — it throws IllegalStateException at startup otherwise
     relocate 'org.bstats', 'ru.Den_Abr.ChatGuard.bstats'
 }
 
